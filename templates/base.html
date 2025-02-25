@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <meta charset="UTF-8">
-  <title>{% block titolo%}{% endblock %}</title>
+  <title>{%block titolo%}{%endblock%}</title>
 </head>
+
 <body>
-  <h1>{% block intestazione %}{% endblock %}</h1>
-  <p>{% block corpo %}{% endblock %}</p>
+  <nav></nav>
+  {%block contenuto%}
+  {%endblock%}
 </body>
+
 </html>
