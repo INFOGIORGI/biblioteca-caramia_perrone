@@ -2,15 +2,48 @@
 <html lang="it">
 
 <head>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <meta charset="UTF-8">
-  <title>{%block titolo%}{%endblock%}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titolo %}{% endblock %}</title>
 </head>
 
 <body>
-  <nav></nav>
-  {%block contenuto%}
-  {%endblock%}
+  <nav class="navbar">
+    <div class="container">
+      <a href="{{ url_for('biblioteca') }}" class="logo">Biblioteca</a>
+      <div class="nav-links">
+        {% if session.get("user_id") %}
+          <a href="{{ url_for('visualizza_noleggi') }}">Noleggi</a>
+          <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+          <a href="{{ url_for('login') }}">Login</a>
+          <a href="{{ url_for('register') }}">Registrati</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- Area per messaggi flash -->
+  <div class="flash-messages">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash-message {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <main class="content">
+    {% block contenuto %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Biblioteca Dell'Arte di Antonello Caramia e Mattia Perrone. Tutti i diritti sono riservati.</p>
+    </div>
+  </footer>
 </body>
 
 </html>

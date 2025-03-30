@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block titolo %}Registrazione{% endblock %}
+
+{% block contenuto %}
+<header>
+  <h1>Registrazione</h1>
+</header>
+
+<main>
+  <form method="POST" action="/register" class="form">
+    <label for="nome">Nome:</label>
+    <input type="text" name="nome" id="nome" placeholder="Inserisci il tuo nome" required>
+    <label for="cognome">Cognome:</label>
+    <input type="text" name="cognome" id="cognome" placeholder="Inserisci il tuo cognome" required>
+    <label for="dataNascita">Data di Nascita:</label>
+    <input type="date" name="dataNascita" id="dataNascita" required>
+    <label for="email">Email:</label>
+    <input type="email" name="email" id="email" placeholder="Inserisci la tua email" required>
+    <label for="telefono">Telefono:</label>
+    <input type="text" name="telefono" id="telefono" placeholder="Inserisci il tuo numero di telefono" required>
+    <label for="indirizzo">Indirizzo:</label>
+    <input type="text" name="indirizzo" id="indirizzo" placeholder="Inserisci il tuo indirizzo" required>
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" placeholder="Inserisci una password" required>
+    <button type="submit" class="btn btn-primary">Registrati</button>
+  </form>
+</main>
+{% endblock %}

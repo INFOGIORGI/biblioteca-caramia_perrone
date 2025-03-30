@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block titolo %}Noleggi{% endblock %}
+
+{% block contenuto %}
+<header>
+  <h1>Elenco Noleggi</h1>
+</header>
+
+<main>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>ID Noleggio</th>
+        <th>Utente</th>
+        <th>Libro</th>
+        <th>Inizio Noleggio</th>
+        <th>Fine Noleggio</th>
+        <th>Restituito</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for noleggio in noleggi %}
+      <tr>
+        <td>{{ noleggio[0] }}</td>
+        <td>{{ noleggio[1] }}</td>
+        <td>{{ noleggio[2] }}</td>
+        <td>{{ noleggio[3] }}</td>
+        <td>{{ noleggio[4] }}</td>
+        <td>{{ "Sì" if noleggio[5] else "No" }}</td>
+        <td>
+          {% if not noleggio[5] %}
+          <form method="POST" action="{{ url_for('restituisci_noleggio', idNoleggio=noleggio[0]) }}">
+            <button type="submit" class="btn btn-primary">Restituisci</button>
+          </form>
+          {% else %}
+          Restituito il {{ noleggio[6] }}
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</main>
+{% endblock %}
