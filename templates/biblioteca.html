@@ -3,123 +3,44 @@
 {% block titolo %}Biblioteca - Home{% endblock %}
 
 {% block contenuto %}
-<header>
-    <h1>Benvenuti alla Biblioteca Dell'Arte</h1>
-</header>
+ <body>
+    <header>
+        <h1>Benvenuti alla Biblioteca Dell'Arte</h1>
+    </header>
 
-<main>
-    <section>
-        <h2>Aggiungi un nuovo libro</h2>
-        <form method="POST" action="/libri">
-            <label for="isbn">ISBN:</label>
-            <input type="text" name="isbn" id="isbn" required>
-            <label for="titolo">Titolo:</label>
-            <input type="text" name="titolo" id="titolo" required>
-            <label for="idAutore">Autore:</label>
-            <select name="idAutore" id="idAutore" required>
-                <option value="" disabled selected>Seleziona un autore</option>
-                {% for autore in autori %}
-                <option value="{{ autore[0] }}">{{ autore[1] }} {{ autore[2] }}</option>
-                {% endfor %}
-            </select>
-            <label for="genere">Genere:</label>
-            <input type="text" name="genere" id="genere" required>
-            <label for="annoUscita">Anno di Uscita:</label>
-            <input type="date" name="annoUscita" id="annoUscita" required>
-            <label for="casaEditrice">Casa Editrice:</label>
-            <input type="text" name="casaEditrice" id="casaEditrice" required>
-            <label for="noleggio">Disponibilità:</label>
-            <select name="noleggio" id="noleggio">
-                <option value="false">Disponibile</option>
-                <option value="true">Noleggiato</option>
-            </select>
-            <button type="submit">Aggiungi Libro</button>
-        </form>
-    </section>
+    <main>
+        <section>
+            <h2>Chi siamo</h2>
+            <p>La Biblioteca Dell'Arte offre migliaia di libri, riviste e risorse digitali per tutti gli appassionati di lettura.</p>
+        </section>
 
-    <section>
-        <h2>Aggiungi un nuovo autore</h2>
-        <form method="POST" action="/autori">
-            <label for="nome">Nome:</label>
-            <input type="text" name="nome" id="nome" required>
-            <label for="cognome">Cognome:</label>
-            <input type="text" name="cognome" id="cognome" required>
-            <label for="nazionalita">Nazionalità:</label>
-            <input type="text" name="nazionalita" id="nazionalita" required>
-            <label for="dataNascita">Data di Nascita:</label>
-            <input type="date" name="dataNascita" id="dataNascita" required>
-            <label for="dataMorte">Data di Morte (opzionale):</label>
-            <input type="date" name="dataMorte" id="dataMorte">
-            <button type="submit">Aggiungi Autore</button>
-        </form>
-    </section>
+        <section>
+            <h2>Novità</h2>
+            <article>
+                <h3>Nuovi arrivi</h3>
+                <p>Scopri gli ultimi libri aggiunti alla nostra collezione.</p>
+            </article>
+            <article>
+                <h3>Eventi</h3>
+                <p>Partecipa ai nostri incontri con autori e gruppi di lettura.</p>
+            </article>
+        </section>
 
-    <section>
-        <h2>Aggiungi un nuovo noleggio</h2>
-        <form method="POST" action="/noleggi">
-            <label for="idUtente">Utente:</label>
-            <select name="idUtente" id="idUtente" required>
-                <option value="" disabled selected>Seleziona un utente</option>
-                {% for utente in utenti %}
-                <option value="{{ utente[0] }}">{{ utente[1] }} {{ utente[2] }}</option>
-                {% endfor %}
-            </select>
-            <label for="isbn">Libro:</label>
-            <select name="isbn" id="isbn" required>
-                <option value="" disabled selected>Seleziona un libro</option>
-                {% for libro in libri %}
-                <option value="{{ libro[0] }}">{{ libro[1] }}</option>
-                {% endfor %}
-            </select>
-            <label for="inizioNoleggio">Inizio Noleggio:</label>
-            <input type="date" name="inizioNoleggio" id="inizioNoleggio" required>
-            <label for="fineNoleggio">Fine Noleggio:</label>
-            <input type="date" name="fineNoleggio" id="fineNoleggio" required>
-            <button type="submit">Aggiungi Noleggio</button>
-        </form>
-    </section>
+        <section>
+            <h2>Orari di apertura</h2>
+            <p>Lunedì - Venerdì: 9:00 - 19:00</p>
+            <p>Sabato: 10:00 - 14:00</p>
+            <p>Domenica: Chiuso</p>
+        </section>
+    </main>
 
-    <section>
-        <h2>Cerca e ordina libri</h2>
-        <form method="GET" action="/libri">
-            <input type="text" name="q" placeholder="Cerca per titolo o autore" value="{{ query }}">
-            <select name="ordine">
-                <option value="titolo" {% if ordine == "titolo" %}selected{% endif %}>Titolo</option>
-                <option value="autore" {% if ordine == "autore" %}selected{% endif %}>Autore</option>
-            </select>
-            <button type="submit">Cerca</button>
-            <a href="/libri" class="btn btn-secondary">Reset</a>
-        </form>
-    </section>
+    <footer>
+        <p>&copy; 2025 Biblioteca Dell'Arte  - Tutti i diritti riservati</p>
+        <p>Email: info@biblioteca.it | Telefono: 3279205470</p>
+    </footer>
+</body>
 
-    <section>
-        <h2>Elenco Libri</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ISBN</th>
-                    <th>Titolo</th>
-                    <th>Autore</th>
-                    <th>Genere</th>
-                    <th>Anno</th>
-                    <th>Casa Editrice</th>
-                    <th>Disponibilità</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for libro in libri %}
-                <tr>
-                    <td>{{ libro[0] }}</td>
-                    <td>{{ libro[1] }}</td>
-                    <td>{{ libro[2] }}</td>
-                    <td>{{ libro[3] }}</td>
-                    <td>{{ libro[4] }}</td>
-                    <td>{{ libro[5] }}</td>
-                    <td>{{ "Noleggiato" if libro[6] else "Disponibile" }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
-</main>
-{% endblock %}
+
+
+
+{%endblock%}
