@@ -12,6 +12,7 @@
         <section>
             <h2>Chi siamo</h2>
             <p>La Biblioteca Dell'Arte offre migliaia di libri, riviste e risorse digitali per tutti gli appassionati di lettura.</p>
+            <img src="BIBLIOTECA.jfif" alt="Descrizione dell'immagine" width="300" height="200">
         </section>
 
         <section>
@@ -37,7 +38,7 @@
 
 <div>
     <!-- Seleziona ordinamento -->
-    <form method="GET" action="/biblioteca">
+    <form method="GET" action="/">
         <label for="ordinamento">Ordina per:</label>
         <select name="ordinamento" id="ordinamento" onchange="this.form.submit()">
             <option value="Titolo" {% if ordinamento == 'Titolo' %}selected{% endif %}>Titolo</option>

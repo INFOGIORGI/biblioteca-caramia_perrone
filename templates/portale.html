@@ -1,0 +1,182 @@
+{%extends 'base.html'%}
+{%block titolo%}Portale biblioteca{%endblock%}
+
+{%block contenuto%}
+<h1>Portale Biblioteca</h1>
+
+<div>
+    <h2>
+        Aggiungi un nuovo autore
+    </h2>
+
+    <form action="/portale" method="POST">
+        <input type="hidden" name="form_type" value="autore">
+
+        <h3>CodAutore</h3>
+        <input type="text" name="codAutore" />
+
+        <h3>Nome</h3>
+        <input type="text" name="nome"/>
+
+        <h3>Cognome</h3>
+        <input type="text" name="cognome" />
+
+        <h3>Data di nascita</h3>
+        <input type="date" name="dataNascita" />
+
+        <h3>Data di morte (facoltativa)</h3>
+        <input type="date" name="dataMorte">
+
+        <button type="button" onclick="resetForm()" class="cancel-button">Cancella</button>
+        <input type="submit" value="Aggiungi" class="submit-button" />
+    </form>
+
+</div>
+
+<div>
+    <h2>
+        Elimina autore
+    </h2>
+
+    <form action="/portale" method="POST">
+        <input type="hidden" name="form_type" value="eliminaAutore">
+        <h3>CodAutore</h3>
+        <input type="text" name="codAutore" />
+
+        <input type="submit" value="Conferma" class="submit-button" />
+    </form>
+</div>
+
+<div>
+    <h2>
+        Aggiungi un nuovo libro
+    </h2>
+
+    <form action="/portale" method="POST">
+        <input type="hidden" name="form_type" value="libro">
+
+        <h3>ISBN</h3>
+        <input type="text" name="isbn" pattern="\d+" title="Inserisci solo numeri"
+            onkeypress="return /[0-9]/.test(event.key)" oninput="this.value = this.value.replace(/\D/g, '')" />
+
+        <h3>Titolo</h3>
+        <input type="text" name="titolo" />
+
+        <h3>CodAutore</h3>
+        <input type="text" name="codAutore" />
+
+        <h3>Anno</h3>
+        <input type="text" name="anno" pattern="\d+" title="Inserisci solo numeri"
+            onkeypress="return /[0-9]/.test(event.key)" oninput="this.value = this.value.replace(/\D/g, '')" />
+
+        <h3>Categoria</h3>
+        <input type="text" name="categoria"/>
+
+        <button type="button" onclick="resetForm()" class="cancel-button">Cancella</button>
+        <input type="submit" value="Aggiungi" class="submit-button" />
+    </form>
+</div>
+
+<div>
+    <h2>
+        Elimina libro
+    </h2>
+
+    <form action="/portale" method="POST">
+        <input type="hidden" name="form_type" value="eliminaLibro">
+        <h3>Progressivo libro</h3>
+        <input type="text" name="progressivoLibro"/>
+
+        <input type="submit" value="Conferma" class="submit-button" />
+    </form>
+</div>
+
+<script>
+    function resetForm() {
+        document.querySelector("form").reset();
+    }
+</script>
+
+<h1>Lista dei libri presenti in biblioteca</h1>
+
+<div>
+    <!-- Seleziona ordinamento -->
+    <form method="GET" action="/portale">
+        <label for="ordinamento">Ordina per:</label>
+        <select name="ordinamento" id="ordinamento" onchange="this.form.submit()">
+            <option value="Titolo" {% if ordinamento=='Titolo' %}selected{% endif %}>Titolo</option>
+            <option value="Autore" {% if ordinamento=='Autore' %}selected{% endif %}>Autore</option>
+        </select>
+
+        <!-- Seleziona genere -->
+        <label for="categoria">Filtra per genere:</label>
+        <select name="categoria" id="categoria" onchange="this.form.submit()">
+            {% for cat in categorie %}
+            <option value="{{ cat }}" {% if categoria_selezionata==cat %}selected{% endif %}>{{ cat }}</option>
+            {% endfor %}
+        </select>
+    </form>
+</div>
+
+<!-- Tabella con i libri -->
+<div class="table-container">
+    <table>
+        <tr>
+            <th>ISBN</th>
+            <th>Titolo</th>
+            <th>Codice Autore</th>
+            <th>Anno</th>
+            <th>Categoria</th>
+            <th>Progressivo</th>
+            <th>PresoInPrestito</th>
+            <th>DataInizioPrestito</th>
+            <th>Azione</th>
+        </tr>
+        {% for libro in libri %}
+        <tr>
+            <td>{{ libro[0] }}</td>
+            <td>{{ libro[1] }}</td>
+            <td>{{ libro[2] }}</td>
+            <td>{{ libro[3] }}</td>
+            <td>{{ libro[4] }}</td>
+            <td>{{ libro[5] }}</td>
+            <td>
+                {% if libro[6] == 0 %}
+                    No
+                {% else %}
+                    Sì
+                {% endif %}
+            </td>
+            <td>{{ libro[7] }}</td>
+            <td>
+                <td>
+                    {% if libro[6] == 0 %}
+                        <form action="/portale" method="post">
+                            <input type="hidden" name="form_type" value="presta">
+                            <input type="hidden" name="progressivoLibro" value="{{ libro[5] }}">
+                            <button type="submit">Presta</button>
+                        </form>
+                    {% else %}
+                        <form action="/portale" method="post">
+                            <input type="hidden" name="form_type" value="rimuovi_prestito">
+                            <input type="hidden" name="progressivoLibro" value="{{ libro[5] }}">
+                            <button type="submit">Rimuovi prestito</button>
+                        </form>
+                    {% endif %}
+                </td>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+{%endblock%}

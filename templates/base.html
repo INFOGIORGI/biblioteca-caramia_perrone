@@ -2,15 +2,22 @@
 <html lang="it">
 
 <head>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <meta charset="UTF-8">
-  <title>{%block titolo%}{%endblock%}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titolo %}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
-  <nav></nav>
-  {%block contenuto%}
-  {%endblock%}
+  <nav>
+    <a href="{{ url_for('homePage') }}">Home Page</a>
+    <a href="{{ url_for('portale') }}">Portale biblioteca</a>
+  </nav>
+
+  <main class="container">{% block contenuto %}{% endblock %}
+  </main>
+
+
 </body>
 
 </html>
